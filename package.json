@@ -1,0 +1,30 @@
+{
+  "name": "hrr47-mvp",
+  "version": "1.0.0",
+  "description": "Take Note! A musical memory game",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manzaloros/hrr47-mvp.git"
+  },
+  "author": "Zach Mansell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manzaloros/hrr47-mvp/issues"
+  },
+  "homepage": "https://github.com/manzaloros/hrr47-mvp#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.9.0",
+    "nodemon": "^2.0.4"
+  }
+}
