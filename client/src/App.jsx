@@ -14,6 +14,7 @@ class App extends Component {
       isGameOver: false,
       hasGameStarted: false,
       name: '',
+      highscores: [],
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleShow = this.handleShow.bind(this);
