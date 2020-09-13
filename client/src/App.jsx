@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import GridContainer from './GridContainer';
-import Timer from './Timer';
-import { ModalOverlay, ModalStyle } from './Styles';
+import CountdownTimer from './Timer';
+import { ModalOverlay } from './Styles';
+import Modal from './Modal';
 
 class App extends Component {
   constructor() {
@@ -10,9 +11,11 @@ class App extends Component {
       expectedClick: '',
       scaleArray: ['A3', 'B3', 'C#4', 'D4', 'E4', 'F#4', 'G#4', 'A4'],
       show: false,
+      isGameOver: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleShow = this.handleShow.bind(this);
+    this.handleTimeUp = this.handleTimeUp.bind(this);
   }
 
   componentDidMount() {
@@ -42,16 +45,28 @@ class App extends Component {
     this.setState({ show: !show });
   }
 
+  handleTimeUp() {
+    const { isGameOver } = this.state;
+    this.setState({ isGameOver: !isGameOver, show: true });
+    console.log('Time up, game over!');
+  }
+
+  handleSubmit() {
+
+  }
+
   render() {
-    const { scaleArray, show } = this.state;
+    const { scaleArray, show, isGameOver } = this.state;
     return (
       <div>
-        <Timer />
+        <CountdownTimer handleTimeUp={this.handleTimeUp} />
         <ModalOverlay style={{ display: show ? 'block' : 'none' }}>
-          <ModalStyle>
-            <h1>Hello from Modal</h1>
-            <button type="button" onClick={this.handleShow}>Close Modal</button>
-          </ModalStyle>
+          <Modal
+            handleSubmit={this.handleSubmit}
+            handleChange={this.handleChange}
+            handleShow={this.handleShow}
+            isGameOver={isGameOver}
+          />
         </ModalOverlay>
         <GridContainer
           handleClick={this.handleClick}
