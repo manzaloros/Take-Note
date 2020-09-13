@@ -2,7 +2,7 @@ import React from 'react';
 import * as Tone from 'tone';
 import { NoteBox, Grid } from './Styles';
 
-const GridContainer = () => {
+const GridContainer = ({ handleClick, scaleArray }) => {
   const colors = {
     A3: 'rgb(255, 102, 0)',
     B3: 'rgb(153, 255, 0)',
@@ -13,25 +13,37 @@ const GridContainer = () => {
     Gsharp4: 'rgb(255, 0, 0)',
     A4: 'rgb(255, 102, 0)',
   };
+
   const synth = new Tone.Synth().toDestination();
-  const scaleArray = [['A3', '8n'], ['B3', '8n'], ['C#4', '8n'], ['D4', '8n'], ['E4', '8n'], ['F#4', '8n'], ['G#4', '8n'], ['A4', '8n']];
-  const playSynth = ([note, time]) => {
+
+  const playSynth = (note, time) => {
     synth.triggerAttackRelease(note, time);
   };
+
   return (
     <Grid>
       {scaleArray.map((note) => {
         const backgroundColor = (() => {
-          if (note[0].includes('#')) {
-            const sharped = note[0].replace('#', 'sharp');
+          if (note.includes('#')) {
+            const sharped = note.replace('#', 'sharp');
             return colors[sharped];
           }
-          return colors[note[0]];
+          return colors[note];
         })();
 
-        return <NoteBox style={{ backgroundColor }} onClick={playSynth.bind(this, note)} />;
+        return (
+          <NoteBox
+            key={note}
+            style={{ backgroundColor }}
+            onClick={() => {
+              handleClick(note);
+              playSynth(note, '8n');
+            }}
+          />
+        );
       })}
     </Grid>
   );
 };
+
 export default GridContainer;

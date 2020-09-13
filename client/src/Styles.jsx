@@ -3,7 +3,6 @@ import styled from 'styled-components';
 const NoteBox = styled.div`
   width: 400px;
   height: 400px;
-  background-color: red;
   margin: 10px;
 `;
 
