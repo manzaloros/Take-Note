@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import GridContainer from './GridContainer';
+import Timer from './Timer';
 import { ModalOverlay, ModalStyle } from './Styles';
 
 class App extends Component {
@@ -45,6 +46,7 @@ class App extends Component {
     const { scaleArray, show } = this.state;
     return (
       <div>
+        <Timer />
         <ModalOverlay style={{ display: show ? 'block' : 'none' }}>
           <ModalStyle>
             <h1>Hello from Modal</h1>
