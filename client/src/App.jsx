@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import GridContainer from './GridContainer';
-import Modal from './Modal';
+import { ModalOverlay, ModalStyle } from './Styles';
 
 class App extends Component {
   constructor() {
@@ -45,10 +45,12 @@ class App extends Component {
     const { scaleArray, show } = this.state;
     return (
       <div>
-        <Modal
-          show={show}
-          handleShow={this.handleShow}
-        />
+        <ModalOverlay style={{ display: show ? 'block' : 'none' }}>
+          <ModalStyle>
+            <h1>Hello from Modal</h1>
+            <button type="button" onClick={this.handleShow}>Close Modal</button>
+          </ModalStyle>
+        </ModalOverlay>
         <GridContainer
           handleClick={this.handleClick}
           scaleArray={scaleArray}

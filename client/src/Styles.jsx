@@ -11,13 +11,16 @@ const Grid = styled.div`
   grid-template-columns: auto auto auto;
 `;
 
-const ModalStyle = styled.div`
+const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   width:100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
+`;
+
+const ModalStyle = styled.section`
   position:fixed;
   background: white;
   width: 80%;
@@ -28,5 +31,5 @@ const ModalStyle = styled.div`
 `;
 
 export {
-  NoteBox, Grid, ModalStyle,
+  NoteBox, Grid, ModalOverlay, ModalStyle,
 };
