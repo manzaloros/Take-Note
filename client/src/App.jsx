@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as Tone from 'tone';
 import GridContainer from './GridContainer';
 
 class App extends Component {
@@ -9,7 +8,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // Tone.context.resume();
   }
 
   render() {
