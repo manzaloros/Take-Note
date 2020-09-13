@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import GridContainer from './GridContainer';
+import Modal from './Modal';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       expectedClick: '',
       scaleArray: ['A3', 'B3', 'C#4', 'D4', 'E4', 'F#4', 'G#4', 'A4'],
+      show: false,
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleShow = this.handleShow.bind(this);
   }
 
   componentDidMount() {
@@ -20,7 +23,7 @@ class App extends Component {
   handleClick(note) {
     const { expectedClick, scaleArray } = this.state;
     const length = scaleArray.length - 1;
-    console.log("note at length", note, scaleArray[length])
+    console.log('note at end of array:', note, scaleArray[length]);
     if (note !== expectedClick) {
       // Game over
       console.log('game over!');
@@ -33,11 +36,24 @@ class App extends Component {
     }
   }
 
+  handleShow() {
+    const { show } = this.state;
+    this.setState({ show: !show });
+  }
+
   render() {
-    const { scaleArray } = this.state;
+    const { scaleArray, show } = this.state;
     return (
       <div>
-        <GridContainer handleClick={this.handleClick} scaleArray={scaleArray} />
+        <Modal
+          show={show}
+          handleShow={this.handleShow}
+        />
+        <GridContainer
+          handleClick={this.handleClick}
+          scaleArray={scaleArray}
+        />
+        <button type="button" onClick={this.handleShow}>Open Modal</button>
       </div>
     );
   }
