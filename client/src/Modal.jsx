@@ -1,11 +1,14 @@
 import React from 'react';
 import { ModalStyle } from './Styles';
 
-const Modal = ({ handleSubmit, handleChange, handleShow, isGameOver }) => {
-  if (isGameOver) {
-    return <ModalStyle>Game over!</ModalStyle>;
-  }
-  return (
+const Modal = ({
+  handleSubmit,
+  handleChange,
+  handleShow,
+  isGameOver,
+}) => (isGameOver
+  ? <ModalStyle>Game over!</ModalStyle>
+  : (
     <ModalStyle>
       <form onSubmit={handleSubmit}>
         <label>
@@ -16,7 +19,6 @@ const Modal = ({ handleSubmit, handleChange, handleShow, isGameOver }) => {
       </form>
       <button type="button" onClick={handleShow}>Close Modal</button>
     </ModalStyle>
-  );
-};
+  ));
 
 export default Modal;

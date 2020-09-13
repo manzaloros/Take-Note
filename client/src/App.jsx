@@ -12,6 +12,7 @@ class App extends Component {
       scaleArray: ['A3', 'B3', 'C#4', 'D4', 'E4', 'F#4', 'G#4', 'A4'],
       show: false,
       isGameOver: false,
+      hasGameStarted: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleShow = this.handleShow.bind(this);
@@ -25,7 +26,11 @@ class App extends Component {
   }
 
   handleClick(note) {
-    const { expectedClick, scaleArray } = this.state;
+    const { expectedClick, scaleArray, hasGameStarted } = this.state;
+    if (!hasGameStarted) {
+      console.log("Game start!")
+      this.setState({ hasGameStarted: true });
+    }
     const length = scaleArray.length - 1;
     console.log('note at end of array:', note, scaleArray[length]);
     if (note !== expectedClick) {
@@ -52,14 +57,19 @@ class App extends Component {
   }
 
   handleSubmit() {
-
+    // Send user name and remaining countdown time to DB
   }
 
   render() {
-    const { scaleArray, show, isGameOver } = this.state;
+    const {
+      scaleArray,
+      show,
+      isGameOver,
+      hasGameStarted,
+    } = this.state;
     return (
-      <div>
-        <CountdownTimer handleTimeUp={this.handleTimeUp} />
+      < div >
+        <CountdownTimer handleTimeUp={this.handleTimeUp} hasGameStarted={hasGameStarted} />
         <ModalOverlay style={{ display: show ? 'block' : 'none' }}>
           <Modal
             handleSubmit={this.handleSubmit}
@@ -73,7 +83,7 @@ class App extends Component {
           scaleArray={scaleArray}
         />
         <button type="button" onClick={this.handleShow}>Open Modal</button>
-      </div>
+      </div >
     );
   }
 }
