@@ -7,9 +7,10 @@ const Modal = ({
   handleShow,
   isGameOver,
 }) => (isGameOver
-  ? <ModalStyle>Game over!</ModalStyle>
-  : (
+  ? (
     <ModalStyle>
+      Game Over!
+      <br />
       <form onSubmit={handleSubmit}>
         <label>
           Name:
@@ -17,6 +18,11 @@ const Modal = ({
         </label>
         <input type="submit" value="submit" />
       </form>
+    </ModalStyle>
+  )
+  : (
+    <ModalStyle>
+      High Scores:
       <button type="button" onClick={handleShow}>Close Modal</button>
     </ModalStyle>
   ));

@@ -13,10 +13,13 @@ class App extends Component {
       show: false,
       isGameOver: false,
       hasGameStarted: false,
+      name: '',
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleTimeUp = this.handleTimeUp.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -28,13 +31,14 @@ class App extends Component {
   handleClick(note) {
     const { expectedClick, scaleArray, hasGameStarted } = this.state;
     if (!hasGameStarted) {
-      console.log("Game start!")
+      console.log('Game start!');
       this.setState({ hasGameStarted: true });
     }
     const length = scaleArray.length - 1;
     console.log('note at end of array:', note, scaleArray[length]);
     if (note !== expectedClick) {
       // Game over
+      this.setState({ isGameOver: true, show: true });
       console.log('game over!');
     } else if (note === expectedClick) {
       this.setState({ expectedClick: scaleArray[scaleArray.indexOf(note) + 1] }, () => {
@@ -51,13 +55,17 @@ class App extends Component {
   }
 
   handleTimeUp() {
-    const { isGameOver } = this.state;
-    this.setState({ isGameOver: !isGameOver, show: true });
+    this.setState({ isGameOver: true, show: true });
     console.log('Time up, game over!');
   }
 
   handleSubmit() {
     // Send user name and remaining countdown time to DB
+  }
+
+  handleChange(e) {
+    e.preventDefault();
+    this.setState({ name: e.target.value });
   }
 
   render() {
@@ -68,7 +76,7 @@ class App extends Component {
       hasGameStarted,
     } = this.state;
     return (
-      < div >
+      <div>
         <CountdownTimer handleTimeUp={this.handleTimeUp} hasGameStarted={hasGameStarted} />
         <ModalOverlay style={{ display: show ? 'block' : 'none' }}>
           <Modal
@@ -82,8 +90,8 @@ class App extends Component {
           handleClick={this.handleClick}
           scaleArray={scaleArray}
         />
-        <button type="button" onClick={this.handleShow}>Open Modal</button>
-      </div >
+        <button type="button" onClick={this.handleShow}>High Scores</button>
+      </div>
     );
   }
 }
