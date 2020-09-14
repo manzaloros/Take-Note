@@ -11,8 +11,8 @@ const getHighScores = async () => {
   try {
     await pool.query(createTable);
     const statement = 'SELECT * from highscores';
-    result = await pool.query(statement).rows;
-    return result;
+    result = await pool.query(statement);
+    return result.rows;
   } catch (error) {
     return console.log(error.stack);
   }

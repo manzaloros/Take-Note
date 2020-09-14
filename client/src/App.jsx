@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import GridContainer from './GridContainer';
 import CountdownTimer from './Timer';
 import { ModalOverlay } from './Styles';
@@ -14,9 +15,11 @@ class App extends Component {
       isGameOver: false,
       hasGameStarted: false,
       name: '',
+      highscore: 0,
       highscores: [],
     };
     this.handleClick = this.handleClick.bind(this);
+    this.fetchHighScores = this.fetchHighScores.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleTimeUp = this.handleTimeUp.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,22 +30,41 @@ class App extends Component {
     const { scaleArray } = this.state;
     // Set first note of scale:
     this.setState({ expectedClick: scaleArray[0] });
+    this.fetchHighScores();
+  }
+
+  fetchHighScores() {
+    axios.get('/scores')
+      .then((res) => {
+        this.setState({ highscores: res.data });
+      })
+      .catch((error) => { console.log(error) });
   }
 
   handleClick(note) {
-    const { expectedClick, scaleArray, hasGameStarted } = this.state;
+    const {
+      expectedClick,
+      scaleArray,
+      hasGameStarted,
+    } = this.state;
+    let { highscore } = this.state;
     if (!hasGameStarted) {
-      console.log('Game start!');
       this.setState({ hasGameStarted: true });
     }
+
     const length = scaleArray.length - 1;
     console.log('note at end of array:', note, scaleArray[length]);
+
     if (note !== expectedClick) {
-      // Game over
+      // Game over. Could also just not add to score instead of instantly ending game:
       this.setState({ isGameOver: true, show: true });
       console.log('game over!');
     } else if (note === expectedClick) {
-      this.setState({ expectedClick: scaleArray[scaleArray.indexOf(note) + 1] }, () => {
+      // Correct note clicked:
+      this.setState({
+        expectedClick: scaleArray[scaleArray.indexOf(note) + 1],
+        highscore: highscore += 1,
+      }, () => {
         if (note === scaleArray[length]) {
           console.log('Win');
         }
@@ -60,8 +82,16 @@ class App extends Component {
     console.log('Time up, game over!');
   }
 
-  handleSubmit() {
-    // Send user name and remaining countdown time to DB
+  handleSubmit(e) {
+    e.preventDefault();
+    const { name, highscore } = this.state;
+    // Send user name and score to DB
+    axios.post('/', { name, highscore })
+      .then(() => {
+        this.fetchHighScores();
+        this.setState({ isGameOver: false, hasGameStarted: false });
+      })
+      .catch((error) => console.log(error.stack));
   }
 
   handleChange(e) {
@@ -75,6 +105,8 @@ class App extends Component {
       show,
       isGameOver,
       hasGameStarted,
+      highscores,
+      highscore,
     } = this.state;
     return (
       <div>
@@ -85,6 +117,8 @@ class App extends Component {
             handleChange={this.handleChange}
             handleShow={this.handleShow}
             isGameOver={isGameOver}
+            highscores={highscores}
+            highscore={highscore}
           />
         </ModalOverlay>
         <GridContainer

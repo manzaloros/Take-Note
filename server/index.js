@@ -8,7 +8,7 @@ const { getHighScores, postHighScore } = require('./database');
 app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 app.use(express.json());
 
-app.get('/', (req, res) => {
+app.get('/scores', (req, res) => {
   getHighScores()
     .then((result) => res.send(result))
     .catch((error) => console.log(error));
