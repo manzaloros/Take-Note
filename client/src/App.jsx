@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import GridContainer from './GridContainer';
 import CountdownTimer from './Timer';
-import { ModalOverlay } from './Styles';
+import { ModalOverlay, TimerScoreGrid } from './Styles';
 import Modal from './Modal';
 
 class App extends Component {
@@ -17,6 +17,7 @@ class App extends Component {
       name: '',
       highscore: 0,
       highscores: [],
+      round: 1,
     };
     this.handleClick = this.handleClick.bind(this);
     this.fetchHighScores = this.fetchHighScores.bind(this);
@@ -24,6 +25,7 @@ class App extends Component {
     this.handleTimeUp = this.handleTimeUp.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleResetGame = this.handleResetGame.bind(this);
   }
 
   componentDidMount() {
@@ -38,7 +40,7 @@ class App extends Component {
       .then((res) => {
         this.setState({ highscores: res.data });
       })
-      .catch((error) => { console.log(error) });
+      .catch((error) => { console.log(error); });
   }
 
   handleClick(note) {
@@ -46,27 +48,31 @@ class App extends Component {
       expectedClick,
       scaleArray,
       hasGameStarted,
+      round,
     } = this.state;
     let { highscore } = this.state;
+
+    // Starts timer when user clicks first block:
     if (!hasGameStarted) {
       this.setState({ hasGameStarted: true });
     }
 
     const length = scaleArray.length - 1;
-    console.log('note at end of array:', note, scaleArray[length]);
-
     if (note !== expectedClick) {
       // Game over. Could also just not add to score instead of instantly ending game:
-      this.setState({ isGameOver: true, show: true });
-      console.log('game over!');
+      // this.setState({ isGameOver: true, show: true });
+
+      // Subtract from high score if wrong note:
+      this.setState({ highscore: highscore > 0 ? highscore -= 1 : 0 });
     } else if (note === expectedClick) {
-      // Correct note clicked:
+      // If correct, increment high score with round multiplier:
       this.setState({
         expectedClick: scaleArray[scaleArray.indexOf(note) + 1],
-        highscore: highscore += 1,
+        highscore: (highscore = (highscore * round) + 1),
       }, () => {
         if (note === scaleArray[length]) {
-          console.log('Win');
+          // Keep track of how many wins? Requires back end refactor
+          this.handleTimeUp();
         }
       });
     }
@@ -78,8 +84,15 @@ class App extends Component {
   }
 
   handleTimeUp() {
-    this.setState({ isGameOver: true, show: true });
-    console.log('Time up, game over!');
+    const { scaleArray } = this.state;
+    let { round } = this.state;
+    this.setState({
+      isGameOver: true,
+      show: true,
+      hasGameStarted: false,
+      expectedClick: scaleArray[0],
+      round: round += 1,
+    });
   }
 
   handleSubmit(e) {
@@ -89,9 +102,21 @@ class App extends Component {
     axios.post('/', { name, highscore })
       .then(() => {
         this.fetchHighScores();
-        this.setState({ isGameOver: false, hasGameStarted: false });
+      })
+      .then(() => {
+        this.handleResetGame();
       })
       .catch((error) => console.log(error.stack));
+  }
+
+  handleResetGame() {
+    const { scaleArray } = this.state;
+    this.setState({
+      isGameOver: false,
+      hasGameStarted: false,
+      expectedClick: scaleArray[0],
+      highscore: 0,
+    });
   }
 
   handleChange(e) {
@@ -107,15 +132,23 @@ class App extends Component {
       hasGameStarted,
       highscores,
       highscore,
+      round,
     } = this.state;
     return (
       <div>
-        <CountdownTimer handleTimeUp={this.handleTimeUp} hasGameStarted={hasGameStarted} />
+        <section>Take Note!</section>
+        <TimerScoreGrid>
+          <CountdownTimer handleTimeUp={this.handleTimeUp} hasGameStarted={hasGameStarted} />
+          <div>
+            {`Score: ${highscore}`}
+          </div>
+        </TimerScoreGrid>
         <ModalOverlay style={{ display: show ? 'block' : 'none' }}>
           <Modal
             handleSubmit={this.handleSubmit}
             handleChange={this.handleChange}
             handleShow={this.handleShow}
+            handleResetGame={this.handleResetGame}
             isGameOver={isGameOver}
             highscores={highscores}
             highscore={highscore}
@@ -124,6 +157,7 @@ class App extends Component {
         <GridContainer
           handleClick={this.handleClick}
           scaleArray={scaleArray}
+          round={round}
         />
         <button type="button" onClick={this.handleShow}>High Scores</button>
       </div>

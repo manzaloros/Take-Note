@@ -4,7 +4,7 @@ import Timer from 'react-compound-timer';
 const CountdownTimer = ({ handleTimeUp, hasGameStarted }) => (hasGameStarted
   ? (
     <Timer
-      initialTime={3000}
+      initialTime={10000}
       direction="backward"
       checkpoints={[{ time: 0, callback: handleTimeUp }]}
     >
@@ -20,6 +20,6 @@ const CountdownTimer = ({ handleTimeUp, hasGameStarted }) => (hasGameStarted
       )}
     </Timer>
   )
-  : <div />);
+  : <div>Time</div>);
 
 export default CountdownTimer;

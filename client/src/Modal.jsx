@@ -5,20 +5,33 @@ const Modal = ({
   handleSubmit,
   handleChange,
   handleShow,
+  handleResetGame,
   isGameOver,
   highscores,
   highscore,
 }) => {
   const scores = highscores.map((user) => <section key={user.name}>{`${user.name} ${user.highscore}`}</section>);
-  const closeModal = <button type="button" onClick={handleShow}>Close Modal</button>;
+  const closeModal = (
+    <button
+      type="button"
+      onClick={() => {
+        handleShow();
+        handleResetGame();
+      }}
+    >
+      Close Modal
+    </button>
+  );
 
   return isGameOver
     ? (
       <ModalStyle>
-        Game Over! Score: {highscore}
+        Game Over! Score:
+        {' '}
+        {highscore}
         <br />
         <form onSubmit={handleSubmit}>
-          <label>
+          <label htmlFor="name">
             Name:
             <input type="text" onChange={handleChange} />
           </label>

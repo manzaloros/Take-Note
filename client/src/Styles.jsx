@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 
+const TimerScoreGrid = styled.section`
+  display: grid;
+  grid-template-areas: left right;
+`;
+
 const NoteBox = styled.div`
   width: 400px;
   height: 400px;
@@ -31,5 +36,5 @@ const ModalStyle = styled.section`
 `;
 
 export {
-  NoteBox, Grid, ModalOverlay, ModalStyle,
+  NoteBox, Grid, ModalOverlay, ModalStyle, TimerScoreGrid,
 };
