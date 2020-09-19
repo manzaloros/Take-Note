@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import GridContainer from './GridContainer';
 import CountdownTimer from './Timer';
-import { ModalOverlay, TimerScoreGrid } from './Styles';
+import {
+  ModalOverlay, TimerScoreGrid, GlobalStyle, PageWrapper,
+} from './Styles';
 import Modal from './Modal';
 
 class App extends Component {
@@ -18,6 +20,7 @@ class App extends Component {
       highscore: 0,
       highscores: [],
       round: 1,
+      scaleType: 'major',
     };
     this.handleClick = this.handleClick.bind(this);
     this.fetchHighScores = this.fetchHighScores.bind(this);
@@ -26,6 +29,7 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleResetGame = this.handleResetGame.bind(this);
+    this.changeScale = this.changeScale.bind(this);
   }
 
   componentDidMount() {
@@ -124,6 +128,20 @@ class App extends Component {
     this.setState({ name: e.target.value });
   }
 
+  changeScale(e) {
+    e.preventDefault();
+    const scale = e.target.value;
+    const scales = {
+      major: ['A3', 'B3', 'C#4', 'D4', 'E4', 'F#4', 'G#4', 'A4'],
+      minor: ['A3', 'B3', 'C4', 'D4', 'E4', 'F#4', 'G#4', 'A4'],
+      lydian: ['A3', 'B3', 'C#4', 'D#4', 'E4', 'F#4', 'G#4', 'A4'],
+      octatonic: ['A3', 'Bb3', 'C4', 'C#4', 'D#4', 'E4', 'F#4', 'G4'],
+    };
+    this.setState({
+      scaleArray: scales[scale], scaleType: scale, round: 1,
+    }, () => this.handleResetGame());
+  }
+
   render() {
     const {
       scaleArray,
@@ -133,10 +151,11 @@ class App extends Component {
       highscores,
       highscore,
       round,
+      scaleType,
     } = this.state;
     return (
-      <div>
-        <section>Take Note!</section>
+      <PageWrapper>
+        <GlobalStyle />
         <TimerScoreGrid>
           <CountdownTimer handleTimeUp={this.handleTimeUp} hasGameStarted={hasGameStarted} />
           <div>
@@ -160,7 +179,15 @@ class App extends Component {
           round={round}
         />
         <button type="button" onClick={this.handleShow}>High Scores</button>
-      </div>
+        <label>
+          <select value={scaleType} onChange={this.changeScale}>
+            <option value="major">Major</option>
+            <option value="minor">Minor</option>
+            <option value="lydian">Lydian</option>
+            <option value="octatonic">Octatonic</option>
+          </select>
+        </label>
+      </PageWrapper>
     );
   }
 }

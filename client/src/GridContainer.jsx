@@ -8,14 +8,17 @@ const GridContainer = ({
   round,
 }) => {
   const colors = {
-    A3: 'rgb(174,0,0)',
-    B3: 'rgb(255,0,0)',
-    Csharp4: 'rgb(255,239,0)',
+    A3: 'rgb(255,102,0)',
+    Bb3: 'rgb(255,239,0)',
+    B3: 'rgb(153,255,0)',
+    C4: 'rgb(40, 255, 0)',
+    Csharp4: 'rgb(0,255,242)',
     D4: 'rgb(153,255,0)',
-    E4: 'rgb(0,255,242)',
-    Fsharp4: 'rgb(5,0,255)',
+    Dsharp4: 'rgb(5,0,255)',
+    E4: 'rgb(71,0,237)',
+    Fsharp4: 'rgb(174,0,0)',
     G4: 'rgb(255, 0, 0)',
-    Gsharp4: 'rgb(71,0,237)',
+    Gsharp4: 'rgb(255,0,0)',
     A4: 'rgb(99,0,178)',
   };
 
