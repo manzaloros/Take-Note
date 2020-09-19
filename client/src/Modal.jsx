@@ -19,7 +19,7 @@ const Modal = ({
         handleResetGame();
       }}
     >
-      Close Modal
+      Back
     </button>
   );
 

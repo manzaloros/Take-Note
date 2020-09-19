@@ -19,6 +19,10 @@ module.exports = {
           },
         }, 'source-map-loader'],
       },
+      {
+        test: /\.(png|eot|svg|ttf|woff|woff2)$/,
+        loader: 'file-loader?name=/fonts/[name].[ext]',
+      },
     ],
   },
   resolve: {

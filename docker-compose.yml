@@ -1,0 +1,33 @@
+version: "3"
+services:
+  node_backend:
+    container_name: "node_backend"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - PGUSER=zacharymansell
+      - PGHOST=postgres
+      - PGPASSWORD=null
+      - PGDATABASE=mvp
+      - PGPORT=5432
+      - PORT=3000
+
+  pg:
+    image: "postgres:12"
+    container_name: "postgres"
+    environment:
+      - POSTGRES_USER=zacharymansell
+      - POSTGRES_PASSWORD=zacharymansell
+    ports:
+      - "5430:5432"
+    volumes:
+      - ./server/database/db_data:/var/lib/postgresql/data
+      - ./server/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./server/database/postgres.conf:/etc/postgresql/postgresql.conf
+      # - ./server/database/pg_hba.conf:/etc/postgresql/pg_hba.conf
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    # command: postgres -c config_file=/etc/postgresql/pg_hba.conf
+    restart: always
