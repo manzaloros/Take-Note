@@ -36,3 +36,9 @@ bower_components/
 
 # ENV files
 .env
+
+# Docker stuff
+Dockerfile
+
+# Database stuff
+server/db_data
