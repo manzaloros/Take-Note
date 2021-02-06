@@ -32,4 +32,8 @@ Choose your favorite sounding scale mode!
 
 ## Usage
 
+`npm start`
+`npm run dev`
+`npm run build`
+
 ## Config
