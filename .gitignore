@@ -41,4 +41,4 @@ bower_components/
 Dockerfile
 
 # Database stuff
-server/db_data
+server/database/db_data
